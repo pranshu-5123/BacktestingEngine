@@ -21,7 +21,7 @@ st.caption("A simple backtesting engine for trading strategies")
 st.sidebar.title("Backtesting Engine v1.0")
 
 st.sidebar.markdown("""
-Welcome to the Backtesting Engine, a simple yet powerful tool for backtesting trading strategies. This application provides a comprehensive set of features to help you analyze and visualize your trading strategies.
+Backtesting Engine, is an simple yet powerful tool for backtesting trading strategies. This application provides a comprehensive set of features to help you analyze and visualize your trading strategies.
 
 **Developer**:
 Pranshu Singh
