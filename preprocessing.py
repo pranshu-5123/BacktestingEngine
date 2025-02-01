@@ -3,19 +3,24 @@ import pandas as pd
 class DataPreprocessor:
     def __init__(self, df):
         self.df = df
-    
+
     def handle_missing_values(self):
         self.df.fillna(method='ffill', inplace=True)  # Forward fill
         self.df.dropna(inplace=True)  # Drop rows still containing NaN
         return self.df
 
     def adjust_prices(self, adjustment_factor):
+        # Ensure the columns are numeric
+        self.df[['Open', 'High', 'Low', 'Close']] = self.df[['Open', 'High', 'Low', 'Close']].apply(pd.to_numeric, errors='coerce')
         self.df[['Open', 'High', 'Low', 'Close']] *= adjustment_factor
         return self.df
 
     def convert_date_column(self):
-        self.df['Date'] = pd.to_datetime(self.df['Date'])
-        self.df.set_index('Date', inplace=True)
+        if 'Date' in self.df.columns:
+            self.df['Date'] = pd.to_datetime(self.df['Date'])
+            self.df.set_index('Date', inplace=True)
+        else:
+            raise KeyError("The 'Date' column is missing from the DataFrame.")
         return self.df
 
     def add_missing_dates(self, start_date, end_date):
@@ -38,6 +43,19 @@ class DataPreprocessor:
         return self.df
 
     def preprocess_data(self, adjust_factor=1.0, start_date=None, end_date=None):
+        # Drop first three rows
+        self.df = self.df.iloc[3:].reset_index(drop=True)
+
+        # Rename columns correctly
+        self.df.columns = ["Date", "Adj Close", "Close", "High", "Low", "Open", "Volume"]
+
+        # Convert Date column to datetime
+        self.df["Date"] = pd.to_datetime(self.df["Date"])
+
+        # Convert numerical columns to float
+        numeric_cols = ["Adj Close", "Close", "High", "Low", "Open", "Volume"]
+        self.df[numeric_cols] = self.df[numeric_cols].astype(float)
+
         self.df = self.handle_missing_values()
         self.df = self.adjust_prices(adjust_factor)
         self.df = self.convert_date_column()
