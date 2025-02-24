@@ -85,7 +85,7 @@ if 'metrics' not in st.session_state:
     st.session_state.metrics = None
 
 # Upload data
-st.subheader("Upload your data")
+st.subheader("Upload your OHLC data")
 st.caption("CSV or Excel files are accepted")
 
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv","xlsx"])
