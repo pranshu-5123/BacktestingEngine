@@ -12,7 +12,7 @@ The application also provides performance metrics, price forecasting, and export
 ---
 ## 📊 Diagram: Workflow of Backtesting Engine
 ```mermaid
-graph TD
+graph LR
     A[Upload Data] --> B[Preprocess Data]
     B --> C[Select Strategy]
     C --> D[Generate Signals]
