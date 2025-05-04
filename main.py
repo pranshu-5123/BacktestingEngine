@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -65,7 +63,7 @@ pranshusingh5123@gmail.com
    - View the calculated metrics in a tabular format.
 
 7. **Price Forecasting**:
-   - Forecast future prices using the ETS model.
+   - Forecast future prices using the ETS model.ac
    - Visualize the forecasted prices alongside historical prices.
 
 8. **Export Options**:
@@ -84,8 +82,27 @@ if 'signals' not in st.session_state:
 if 'metrics' not in st.session_state:
     st.session_state.metrics = None
 
+# ... (your previous imports and code remain unchanged)
+
+# Sample OHLC File Download
+st.subheader("📄 Download Sample OHLC Data")
+st.caption("Don’t have data? Download this ready-to-use sample file to experience the backtesting engine.")
+
+try:
+    with open("sample_ohlc.csv", "rb") as f:
+        st.download_button(
+            label="📥 Click here to download a sample OHLC CSV",
+            data=f,
+            file_name="Sample_OHLC.csv",
+            mime="text/csv"
+        )
+except FileNotFoundError:
+    st.warning("sample_ohlc.csv not found. Please add the file to your project directory.")
+
+
+
 # Upload data
-st.subheader("Upload your OHLC data")
+st.subheader("Upload your data")
 st.caption("CSV or Excel files are accepted")
 
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv","xlsx"])
@@ -184,7 +201,7 @@ if uploaded_file:
         st.dataframe(forecast, width=1000, height=500)
 
         # Plotting Forecast
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(10, 6)) 
         plt.plot(df['Close'], label="Historical Prices")
         plt.plot(forecast, label="Forecast", linestyle='--')
         plt.legend()
