@@ -89,7 +89,7 @@ st.subheader("📄 Download Sample OHLC Data")
 st.caption("Don't have data? Download this ready-to-use sample file to experience the backtesting engine.")
 
 try:
-    with open("sample_ohlc.csv", "rb") as f:
+    with open("Sample_OHLC.csv", "rb") as f:
         st.download_button(
             label="📥 Click here to download a sample OHLC CSV",
             data=f,
@@ -97,7 +97,7 @@ try:
             mime="text/csv"
         )
 except FileNotFoundError:
-    st.warning("sample_ohlc.csv not found. Please add the file to your project directory.")
+    st.warning("Sample_OHLC not found. Please add the file to your project directory.")
 
 
 
