@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -25,14 +24,32 @@ def plot_metrics(metrics):
     else:
         raise ValueError("Metrics should be a dictionary or a list of dictionaries")
     
-    metrics_df = metrics_df.melt(var_name="Metric", value_name="Value")
+    # Select only the metrics we want to plot
+    metrics_to_plot = ['CAGR', 'Sharpe Ratio', 'Max Drawdown', 'Win Rate']
+    metrics_df = metrics_df[metrics_to_plot]
     
-    plt.figure(figsize=(10, 5))
-    sns.barplot(x="Metric", y="Value", data=metrics_df)
-    plt.title("Performance Metrics")
+    # Create the plot
+    plt.figure(figsize=(12, 6))
+    
+    # Create bar plot
+    bars = plt.bar(metrics_df.columns, metrics_df.iloc[0], color=['#2ecc71', '#3498db', '#e74c3c', '#f1c40f'])
+    
+    # Add value labels on top of each bar
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2., height,
+                f'{height:.2f}',
+                ha='center', va='bottom')
+    
+    # Customize the plot
+    plt.title('Performance Metrics', pad=20, fontsize=14)
     plt.xticks(rotation=45)
-st.pyplot(plt)
-
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Adjust layout to prevent label cutoff
+    plt.tight_layout()
+    
+    return plt
 
 def plot_signals(data, signals, title="Trading Signals"):
     fig = go.Figure()
