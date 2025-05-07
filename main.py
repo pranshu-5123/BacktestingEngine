@@ -86,10 +86,10 @@ if 'metrics' not in st.session_state:
 
 # Sample OHLC File Download
 st.subheader("📄 Download Sample OHLC Data")
-st.caption("Don’t have data? Download this ready-to-use sample file to experience the backtesting engine.")
+st.caption("Don't have data? Download this ready-to-use sample file to experience the backtesting engine.")
 
 try:
-    with open("Sample_OHLC.csv", "rb") as f:
+    with open("sample_ohlc.csv", "rb") as f:
         st.download_button(
             label="📥 Click here to download a sample OHLC CSV",
             data=f,
@@ -97,7 +97,7 @@ try:
             mime="text/csv"
         )
 except FileNotFoundError:
-    st.warning("Sample_OHLC.csv not found. Please add the file to your project directory.")
+    st.warning("sample_ohlc.csv not found. Please add the file to your project directory.")
 
 
 
@@ -200,13 +200,38 @@ if uploaded_file:
         forecast = forecast_ets(df, steps=steps)
         st.dataframe(forecast, width=1000, height=500)
 
-        # Plotting Forecast
-        plt.figure(figsize=(10, 6)) 
-        plt.plot(df['Close'], label="Historical Prices")
-        plt.plot(forecast, label="Forecast", linestyle='--')
-        plt.legend()
-        plt.title("Price Forecast")
-        st.pyplot(plt)
+        # Plotting Forecast using Plotly
+        fig = go.Figure()
+
+        # Add historical prices
+        fig.add_trace(go.Scatter(
+            x=df.index,
+            y=df['Close'],
+            mode='lines',
+            name='Historical Prices',
+            line=dict(color='blue')
+        ))
+
+        # Add forecast
+        fig.add_trace(go.Scatter(
+            x=forecast.index,
+            y=forecast,
+            mode='lines',
+            name='Forecast',
+            line=dict(color='red', dash='dash')
+        ))
+
+        # Update layout
+        fig.update_layout(
+            title='Price Forecast',
+            xaxis_title='Date',
+            yaxis_title='Price',
+            template='plotly_white',
+            height=600,
+            showlegend=True
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
     # Plot Performance Metrics
     st.subheader("Check Performance Metrics")
