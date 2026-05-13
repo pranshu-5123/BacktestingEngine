@@ -5,8 +5,8 @@ class DataPreprocessor:
         self.df = df
 
     def handle_missing_values(self):
-        self.df.fillna(method='ffill', inplace=True)  # Forward fill
-        self.df.dropna(inplace=True)  # Drop rows still containing NaN
+        self.df = self.df.ffill()   # Forward fill
+        self.df = self.df.bfill()   # Backward fill
         return self.df
 
     def adjust_prices(self, adjustment_factor):
