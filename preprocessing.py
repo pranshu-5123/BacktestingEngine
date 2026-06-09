@@ -5,8 +5,7 @@ class DataPreprocessor:
         self.df = df
 
     def handle_missing_values(self):
-        self.df.ffill()   # Forward fill
-        self.df = self.df.bfill()   # Backward fill
+        self.df = self.df.ffill().bfill()
         return self.df
 
     def adjust_prices(self, adjustment_factor):
@@ -64,6 +63,6 @@ class DataPreprocessor:
         self.df = self.remove_duplicates()
         self.df = self.add_technical_indicators()
         self.df = self.clean_data()
-        self.df.ffill(inplace=True)  # For SMA and RSI
-        self.df.fillna(method='bfill', inplace=True)  # Backward fill as a fallback
+        self.df = self.df.ffill()
+        self.df = self.df.bfill()
         return self.df
